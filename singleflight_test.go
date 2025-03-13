@@ -9,11 +9,10 @@ import (
 	"time"
 )
 
-//
-// TestExclusiveCallDo 独自执行Do函数
+// TestExclusiveCallDo 独自执行 Do 函数
 func TestExclusiveCallDo(t *testing.T) {
-	g := NewSingleFlight[interface{}]()
-	v, err := g.Do("key", func() (interface{}, error) {
+	g := NewSingleFlight[any]()
+	v, err := g.Do("key", func() (any, error) {
 		return "bar", nil
 	})
 	if got, want := fmt.Sprintf("%v (%T)", v, v), "bar (string)"; got != want {
@@ -24,12 +23,11 @@ func TestExclusiveCallDo(t *testing.T) {
 	}
 }
 
-//
-// TestExclusiveCallDoErr 独自执行Do函数，并返回错误
+// TestExclusiveCallDoErr 独自执行 Do 函数，并返回错误
 func TestExclusiveCallDoErr(t *testing.T) {
-	g := NewSingleFlight[interface{}]()
+	g := NewSingleFlight[any]()
 	someErr := errors.New("some error")
-	v, err := g.Do("key", func() (interface{}, error) {
+	v, err := g.Do("key", func() (any, error) {
 		// 强行返回 error
 		return nil, someErr
 	})
@@ -41,13 +39,12 @@ func TestExclusiveCallDoErr(t *testing.T) {
 	}
 }
 
-//
-//  TestExclusiveCallDoDupSuppress 在独自执行Do函数时，如果发生了重复调用，则不会触发Do函数
+// TestExclusiveCallDoDupSuppress 在独自执行 Do 函数时，如果发生了重复调用，则不会触发 Do 函数
 func TestExclusiveCallDoDupSuppress(t *testing.T) {
 	g := NewSingleFlight[string]()
 	c := make(chan string)
 	var calls int32
-	// 给 calls 加1
+	// 给 calls 加 1
 	fn := func() (string, error) {
 		atomic.AddInt32(&calls, 1)
 		return <-c, nil
@@ -55,7 +52,7 @@ func TestExclusiveCallDoDupSuppress(t *testing.T) {
 
 	const n = 10
 	var wg sync.WaitGroup
-	// 同时加1 最终的结果只能是 1
+	// 同时加 1 最终的结果只能是 1
 	for i := 0; i < n; i++ {
 		wg.Add(1)
 		go func() {
@@ -77,10 +74,9 @@ func TestExclusiveCallDoDupSuppress(t *testing.T) {
 	}
 }
 
-//
-//  TestExclusiveCallDoDiffDupSuppress 在独自执行Do函数时，如果发生了重复调用，但是key不同，则会触发Do函数
+// TestExclusiveCallDoDiffDupSuppress 在独自执行 Do 函数时，如果发生了重复调用，但是 key 不同，则会触发 Do 函数
 func TestExclusiveCallDoDiffDupSuppress(t *testing.T) {
-	g := NewSingleFlight[interface{}]()
+	g := NewSingleFlight[any]()
 	broadcast := make(chan struct{})
 	var calls int32
 	tests := []string{"e", "a", "e", "a", "b", "c", "b", "a", "c", "d", "b", "c", "d"}
@@ -112,8 +108,7 @@ func TestExclusiveCallDoDiffDupSuppress(t *testing.T) {
 	}
 }
 
-//
-//  TestExclusiveCallDoExDupSuppress 在独自执行DoEx函数时，如果发生了重复调用，则不会触发Do函数
+// TestExclusiveCallDoExDupSuppress 在独自执行 DoEx 函数时，如果发生了重复调用，则不会触发 Do 函数
 func TestExclusiveCallDoExDupSuppress(t *testing.T) {
 	g := NewSingleFlight[interface{}]()
 	c := make(chan string)
