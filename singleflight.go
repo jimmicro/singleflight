@@ -8,7 +8,7 @@ type (
 	// 可以将对同一个 Key 的并发请求进行合并，只让其中一个请求到数据库进行查询，其他请求共享同一个结果，可以很大程度提升并发能力
 	// 定义 call 的结构
 	call[T any] struct {
-		wg  sync.WaitGroup // 用于实现通过1个 call，其他 call 阻塞
+		wg  sync.WaitGroup // 用于实现通过 1 个 call，其他 call 阻塞
 		val T              // 表示 call 操作的返回结果
 		err error          // 表示 call 操作发生的错误
 	}

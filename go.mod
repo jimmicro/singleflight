@@ -1,3 +1,3 @@
-module github.com/jimyag/singleflight
+module github.com/jimmicro/singleflight
 
 go 1.18

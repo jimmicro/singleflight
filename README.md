@@ -5,7 +5,7 @@ This repo is a hard fork of [go-zero/singleflight.go at master · zeromicro/go-z
 ## Install
 
 ```shell
-go get github.com/jimyag/singleflight@latest
+go get github.com/jimmicro/singleflight@latest
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ func main() {
 	g := singleflight.NewSingleFlight[string]()
 	c := make(chan string)
 	var calls int32
-	// 给 calls 加1
+	// 给 calls 加 1
 	fn := func() (string, error) {
 		atomic.AddInt32(&calls, 1)
 		return <-c, nil
@@ -34,7 +34,7 @@ func main() {
 
 	const n = 10
 	var wg sync.WaitGroup
-	// 同时加1 最终的结果只能是 1
+	// 同时加 1 最终的结果只能是 1
 	for i := 0; i < n; i++ {
 		wg.Add(1)
 		go func() {
