@@ -11,7 +11,7 @@ import (
 
 // TestExclusiveCallDo 独自执行 Do 函数
 func TestExclusiveCallDo(t *testing.T) {
-	g := NewSingleFlight[any]()
+	g := New[any]()
 	v, err := g.Do("key", func() (any, error) {
 		return "bar", nil
 	})
@@ -25,7 +25,7 @@ func TestExclusiveCallDo(t *testing.T) {
 
 // TestExclusiveCallDoErr 独自执行 Do 函数，并返回错误
 func TestExclusiveCallDoErr(t *testing.T) {
-	g := NewSingleFlight[any]()
+	g := New[any]()
 	someErr := errors.New("some error")
 	v, err := g.Do("key", func() (any, error) {
 		// 强行返回 error
@@ -41,7 +41,7 @@ func TestExclusiveCallDoErr(t *testing.T) {
 
 // TestExclusiveCallDoDupSuppress 在独自执行 Do 函数时，如果发生了重复调用，则不会触发 Do 函数
 func TestExclusiveCallDoDupSuppress(t *testing.T) {
-	g := NewSingleFlight[string]()
+	g := New[string]()
 	c := make(chan string)
 	var calls int32
 	// 给 calls 加 1
@@ -76,7 +76,7 @@ func TestExclusiveCallDoDupSuppress(t *testing.T) {
 
 // TestExclusiveCallDoDiffDupSuppress 在独自执行 Do 函数时，如果发生了重复调用，但是 key 不同，则会触发 Do 函数
 func TestExclusiveCallDoDiffDupSuppress(t *testing.T) {
-	g := NewSingleFlight[any]()
+	g := New[any]()
 	broadcast := make(chan struct{})
 	var calls int32
 	tests := []string{"e", "a", "e", "a", "b", "c", "b", "a", "c", "d", "b", "c", "d"}
@@ -110,7 +110,7 @@ func TestExclusiveCallDoDiffDupSuppress(t *testing.T) {
 
 // TestExclusiveCallDoExDupSuppress 在独自执行 DoEx 函数时，如果发生了重复调用，则不会触发 Do 函数
 func TestExclusiveCallDoExDupSuppress(t *testing.T) {
-	g := NewSingleFlight[interface{}]()
+	g := New[interface{}]()
 	c := make(chan string)
 	var calls int32
 	fn := func() (interface{}, error) {

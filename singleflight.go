@@ -20,8 +20,8 @@ type (
 	}
 )
 
-// NewSingleFlight returns a SingleFlight.
-func NewSingleFlight[T any]() *flightGroup[T] {
+// New returns a SingleFlight.
+func New[T any]() *flightGroup[T] {
 	return &flightGroup[T]{
 		calls: make(map[string]*call[T]),
 	}
