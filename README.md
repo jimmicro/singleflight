@@ -19,11 +19,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/jimyag/singleflight"
+	"github.com/jimmicro/singleflight"
 )
 
 func main() {
-	g := singleflight.NewSingleFlight[string]()
+	g := singleflight.New[string]()
 	c := make(chan string)
 	var calls int32
 	// 给 calls 加 1
