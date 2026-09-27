@@ -2,6 +2,8 @@
 
 This repo is a hard fork of [go-zero/singleflight.go at master · zeromicro/go-zero (github.com)](https://github.com/zeromicro/go-zero/blob/master/core/syncx/singleflight.go) that adds generics to the Group type so that there is no need for type assertion when using the library.
 
+[![Check](https://github.com/jimmicro/singleflight/actions/workflows/check.yaml/badge.svg)](https://github.com/jimmicro/singleflight/actions/workflows/check.yaml)
+
 ## Install
 
 ```shell
@@ -56,4 +58,11 @@ func main() {
 	}
 	log.Printf("done %v", calls)
 }
+```
+
+## Development
+
+```bash
+golangci-lint run ./...
+go test ./...
 ```
